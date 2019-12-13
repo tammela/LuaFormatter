@@ -1,0 +1,23 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: luarocks/luarocks.git
+        ref: v3.2.1
+    - name: Install Lua 5.3
+      run: sudo apt install lua5.3 liblua5.3-dev
+    - name: Install LuaRocks
+      run: ./configure
+    - run: make build
+    - run: sudo make install
+    - run: cd ~
+    - name: Install LuaFormatter
+      run: luarocks install --server=https://luarocks.org/dev luaformatter --local --verbose
